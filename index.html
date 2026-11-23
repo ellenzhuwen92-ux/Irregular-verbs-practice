@@ -12,25 +12,21 @@
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
     .title { font-size: 20px; font-weight: 700; color: #1d4ed8; }
     .tabs { display: flex; gap: 8px; }
-    .tab { padding: 8px 16px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; font-size: 14px; font-weight: 500; cursor: pointer; color: #374151; transition: 0.2s; }
+    .tab { padding: 8px 16px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; font-size: 14px; font-weight: 500; cursor: pointer; color: #374151; }
     .tab.active { background: #1d63dc; color: #fff; border-color: #1d63dc; }
     .tab.locked { background: #f8fafc; color: #9ca3af; border-color: #e5e7eb; cursor: not-allowed; }
-
     .start-box { border: 1px solid #e5e7eb; border-radius: 12px; padding: 36px 24px; text-align: center; }
     .start-title { font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 8px; }
     .start-desc { font-size: 13px; color: #64748b; margin-bottom: 20px; line-height: 1.5; }
     .name-input { width: 100%; max-width: 340px; padding: 12px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; margin-bottom: 16px; outline: none; text-align: center; }
-    .name-input:focus { border-color: #1d63dc; box-shadow: 0 0 0 3px rgba(29, 99, 220, 0.1); }
-
     .stats-bar { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 16px; border-radius: 8px; font-size: 13px; color: #64748b; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
     .student-badge { font-weight: 600; color: #1d4ed8; }
     .warn-badge { color: #dc2626; font-weight: 600; }
     .word-card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 48px 20px; text-align: center; margin-bottom: 22px; }
-    .word-base { font-size: 42px; font-weight: 700; color: #111827; letter-spacing: 0.5px; }
+    .word-base { font-size: 42px; font-weight: 700; color: #111827; }
     .feedback { margin-top: 14px; font-size: 14px; font-weight: 500; min-height: 20px; }
     .feedback.correct { color: #16a34a; }
     .feedback.wrong { color: #dc2626; }
-
     .report-card { border: 1px solid #dbeafe; background: #f8fafc; border-radius: 12px; padding: 28px 20px; margin-bottom: 22px; text-align: center; }
     .report-title { font-size: 22px; font-weight: 700; color: #1d4ed8; margin-bottom: 6px; }
     .report-student { font-size: 15px; font-weight: 600; color: #374151; margin-bottom: 20px; }
@@ -41,25 +37,18 @@
     .mistake-box { text-align: left; background: #fff; border: 1px solid #fee2e2; border-radius: 10px; padding: 14px; margin-bottom: 18px; }
     .mistake-box-title { font-size: 13px; font-weight: 600; color: #b91c1c; margin-bottom: 6px; }
     .mistake-box-list { font-size: 14px; color: #374151; line-height: 1.5; }
-
     .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
     .input-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; }
-    .input-group input { width: 100%; padding: 12px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; outline: none; transition: 0.2s; }
-    .input-group input:focus { border-color: #1d63dc; box-shadow: 0 0 0 3px rgba(29, 99, 220, 0.1); }
-    .btn-primary { width: 100%; padding: 14px; background: #1d63dc; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 14px; transition: 0.2s; }
-    .btn-primary:hover { background: #1752b8; }
-    .btn-copy { width: 100%; padding: 12px; background: #10b981; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-    .btn-copy:hover { background: #059669; }
+    .input-group input { width: 100%; padding: 12px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; outline: none; }
+    .btn-primary { width: 100%; padding: 14px; background: #1d63dc; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 14px; }
+    .btn-copy { width: 100%; padding: 12px; background: #10b981; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
     .bottom-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .btn-secondary { padding: 12px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-secondary { padding: 12px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; }
     .btn-mistakes { background: #fdf2f0; color: #b91c1c; }
-    .btn-mistakes:hover:not(:disabled) { background: #fbe4e0; }
     .btn-mistakes:disabled { opacity: 0.5; cursor: not-allowed; }
     .btn-shuffle { background: #f3f4f6; color: #374151; }
-    .btn-shuffle:hover { background: #e5e7eb; }
     .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
-    .quiz-btn { padding: 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; font-size: 15px; cursor: pointer; font-weight: 500; transition: 0.15s; }
-    .quiz-btn:hover { border-color: #1d63dc; background: #f8fafc; }
+    .quiz-btn { padding: 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; font-size: 15px; cursor: pointer; font-weight: 500; }
     .list-view { max-height: 400px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
     th, td { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; }
@@ -73,7 +62,6 @@
 </head>
 <body oncontextmenu="return false;">
   <div id="toast" class="toast"></div>
-
   <div class="container">
     <div class="header">
       <div class="title">Irregular Verbs Assessment</div>
@@ -86,12 +74,8 @@
 
     <div id="start-area" class="start-box">
       <div class="start-title">Enter Your Name to Begin</div>
-      <div class="start-desc">
-        Anti-cheating is active: copy/paste is disabled, Word List is locked until completion, and tab switches will be recorded on your report.
-      </div>
-      <div>
-        <input type="text" id="student-name-input" class="name-input" placeholder="Full Name..." maxlength="40" autocomplete="off" />
-      </div>
+      <div class="start-desc">Anti-cheating is active: copy/paste is disabled, Word List is locked until completion, and tab switches will be recorded on your report.</div>
+      <div><input type="text" id="student-name-input" class="name-input" placeholder="Full Name..." maxlength="40" autocomplete="off" /></div>
       <button class="btn-primary" style="max-width: 340px; margin: 0 auto;" onclick="startAssessment()">Start Assessment</button>
     </div>
 
@@ -112,22 +96,10 @@
         <div class="report-title">Assessment Complete</div>
         <div class="report-student" id="rep-student">Student: -</div>
         <div class="report-grid">
-          <div class="report-item">
-            <div class="report-val" id="rep-accuracy">0%</div>
-            <div class="report-label">Accuracy</div>
-          </div>
-          <div class="report-item">
-            <div class="report-val" id="rep-score">0/40</div>
-            <div class="report-label">Score</div>
-          </div>
-          <div class="report-item">
-            <div class="report-val" id="rep-time">0s</div>
-            <div class="report-label">Time</div>
-          </div>
-          <div class="report-item">
-            <div class="report-val" id="rep-switches">0</div>
-            <div class="report-label">Tab Switches</div>
-          </div>
+          <div class="report-item"><div class="report-val" id="rep-accuracy">0%</div><div class="report-label">Accuracy</div></div>
+          <div class="report-item"><div class="report-val" id="rep-score">0/40</div><div class="report-label">Score</div></div>
+          <div class="report-item"><div class="report-val" id="rep-time">0s</div><div class="report-label">Time</div></div>
+          <div class="report-item"><div class="report-val" id="rep-switches">0</div><div class="report-label">Tab Switches</div></div>
         </div>
         <div class="mistake-box hidden" id="rep-mistake-box">
           <div class="mistake-box-title">Words to Review:</div>
@@ -138,20 +110,32 @@
 
       <div id="spelling-controls">
         <div class="inputs-grid">
-          <div class="input-group">
-            <label for="past-input">Past Form</label>
-            <input type="text" id="past-input" placeholder="Enter past form..." autocomplete="off" spellcheck="false" />
-          </div>
-          <div class="input-group">
-            <label for="participle-input">Past Participle</label>
-            <input type="text" id="participle-input" placeholder="Enter past participle..." autocomplete="off" spellcheck="false" />
-          </div>
+          <div class="input-group"><label for="past-input">Past Form</label><input type="text" id="past-input" placeholder="Enter past form..." autocomplete="off" spellcheck="false" /></div>
+          <div class="input-group"><label for="participle-input">Past Participle</label><input type="text" id="participle-input" placeholder="Enter past participle..." autocomplete="off" spellcheck="false" /></div>
         </div>
         <button class="btn-primary" id="submit-btn" onclick="handleSubmit()">Submit (Enter)</button>
       </div>
 
-      <div id="quiz-controls" class="hidden">
-        <div class="quiz-options" id="quiz-options"></div>
-      </div>
+      <div id="quiz-controls" class="hidden"><div class="quiz-options" id="quiz-options"></div></div>
 
       <div class="bottom-actions">
+        <button class="btn-secondary btn-mistakes" id="mistakes-btn" onclick="practiceMistakes()" disabled>Practice Mistakes (0)</button>
+        <button class="btn-secondary btn-shuffle" onclick="resetDeck()">Restart Assessment</button>
+      </div>
+    </div>
+
+    <div id="list-area" class="hidden">
+      <div class="list-view">
+        <table>
+          <thead><tr><th>Base Form</th><th>Past Form</th><th>Past Participle</th><th>Status</th></tr></thead>
+          <tbody id="word-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const VERBS = [
+      { base: "fall", past: "fell", pp: "fallen" }, { base: "arise", past: "arose", pp: "arisen" },
+      { base: "awake", past: "awoke", pp: "awoken" }, { base: "bear", past: "bore", pp: "borne" },
+      { base: "beat", past: "beat", pp: "beaten" }, { base: "become", past: "became", pp: "become" },
