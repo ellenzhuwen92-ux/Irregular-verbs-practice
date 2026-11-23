@@ -134,8 +134,208 @@
     </div>
   </div>
 
-  <script>
-    const VERBS = [
+    <script>
+    const VERBS = new Array(
       { base: "fall", past: "fell", pp: "fallen" }, { base: "arise", past: "arose", pp: "arisen" },
       { base: "awake", past: "awoke", pp: "awoken" }, { base: "bear", past: "bore", pp: "borne" },
       { base: "beat", past: "beat", pp: "beaten" }, { base: "become", past: "became", pp: "become" },
+      { base: "begin", past: "began", pp: "begun" }, { base: "bend", past: "bent", pp: "bent" },
+      { base: "bet", past: "bet", pp: "bet" }, { base: "bite", past: "bit", pp: "bitten" },
+      { base: "blow", past: "blew", pp: "blown" }, { base: "break", past: "broke", pp: "broken" },
+      { base: "bring", past: "brought", pp: "brought" }, { base: "build", past: "built", pp: "built" },
+      { base: "buy", past: "bought", pp: "bought" }, { base: "catch", past: "caught", pp: "caught" },
+      { base: "choose", past: "chose", pp: "chosen" }, { base: "come", past: "came", pp: "come" },
+      { base: "cost", past: "cost", pp: "cost" }, { base: "cut", past: "cut", pp: "cut" },
+      { base: "do", past: "did", pp: "done" }, { base: "draw", past: "drew", pp: "drawn" },
+      { base: "drink", past: "drank", pp: "drunk" }, { base: "drive", past: "drove", pp: "driven" },
+      { base: "eat", past: "ate", pp: "eaten" }, { base: "feel", past: "felt", pp: "felt" },
+      { base: "find", past: "found", pp: "found" }, { base: "fly", past: "flew", pp: "flown" },
+      { base: "forget", past: "forgot", pp: "forgotten" }, { base: "get", past: "got", pp: "gotten" },
+      { base: "give", past: "gave", pp: "given" }, { base: "go", past: "went", pp: "gone" },
+      { base: "grow", past: "grew", pp: "grown" }, { base: "know", past: "knew", pp: "known" },
+      { base: "make", past: "made", pp: "made" }, { base: "run", past: "ran", pp: "run" },
+      { base: "see", past: "saw", pp: "seen" }, { base: "speak", past: "spoke", pp: "spoken" },
+      { base: "take", past: "took", pp: "taken" }, { base: "write", past: "wrote", pp: "written" }
+    );
+
+    let studentName = "", hasStarted = false, isExamActive = false, tabSwitches = 0;
+    let deck = new Array(), sessionMistakes = new Set(), allMistakes = new Set();
+    let totalWords = 40, correctCount = 0, currentMode = "spelling", waitingNext = false, isListUnlocked = false, startTime = 0, lastReportSummary = "";
+
+    function showToast(msg, isWarn) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.className = isWarn ? "toast warn show" : "toast show";
+      setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function shuffle(arr) { return arr.slice().sort(() => Math.random() - 0.5); }
+
+    new Array("paste", "copy", "cut", "drop").forEach(evt => {
+      document.addEventListener(evt, e => { e.preventDefault(); showToast("Copy/Paste is disabled during assessment.", true); });
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && isExamActive) {
+        tabSwitches++;
+        document.getElementById("tab-switch-text").textContent = "Switches: " + tabSwitches;
+        showToast("Warning: Tab switch recorded (" + tabSwitches + ")!", true);
+      }
+    });
+
+    function startAssessment() {
+      const nameVal = document.getElementById("student-name-input").value.trim();
+      if (!nameVal) { showToast("Please enter your name first.", true); return; }
+      studentName = nameVal;
+      hasStarted = true;
+      document.getElementById("student-label").textContent = "Student: " + studentName;
+      document.getElementById("start-area").classList.add("hidden");
+      document.getElementById("practice-area").classList.remove("hidden");
+      resetDeck();
+    }
+
+    function updateListLockState() {
+      const listTab = document.getElementById("tab-list");
+      listTab.classList.toggle("locked", !isListUnlocked);
+      listTab.textContent = isListUnlocked ? "Word List" : "🔒 Word List";
+    }
+
+    function resetDeck(customList) {
+      deck = shuffle(customList || VERBS);
+      totalWords = deck.length;
+      correctCount = 0;
+      tabSwitches = 0;
+      sessionMistakes.clear();
+      waitingNext = false;
+      isListUnlocked = false;
+      isExamActive = true;
+      startTime = Date.now();
+      updateListLockState();
+      document.getElementById("tab-switch-text").textContent = "Switches: 0";
+      document.getElementById("word-card").classList.remove("hidden");
+      document.getElementById("report-card").classList.add("hidden");
+      document.getElementById("spelling-controls").classList.toggle("hidden", currentMode !== "spelling");
+      document.getElementById("quiz-controls").classList.toggle("hidden", currentMode !== "quiz");
+      document.getElementById("submit-btn").textContent = "Submit (Enter)";
+      renderCurrent();
+    }
+
+    function practiceMistakes() {
+      if (allMistakes.size === 0) return;
+      const list = VERBS.filter(v => allMistakes.has(v.base));
+      if (currentMode === "list") switchTab("spelling", document.getElementById("tab-spelling"));
+      resetDeck(list);
+    }
+
+    function updateStats() {
+      document.getElementById("remaining-text").textContent = "Remaining: " + Math.max(0, deck.length - 1);
+      document.getElementById("score-text").textContent = "Correct: " + correctCount + " | Mistakes: " + sessionMistakes.size;
+      const btn = document.getElementById("mistakes-btn");
+      btn.textContent = "Practice Mistakes (" + allMistakes.size + ")";
+      btn.disabled = allMistakes.size === 0;
+    }
+
+    function showCompletionReport() {
+      isExamActive = false;
+      isListUnlocked = true;
+      updateListLockState();
+      const elapsed = Math.max(1, Math.round((Date.now() - startTime) / 1000));
+      const accuracy = totalWords > 0 ? Math.round((correctCount / totalWords) * 100) : 0;
+      const mistakeArr = Array.from(sessionMistakes);
+
+      document.getElementById("remaining-text").textContent = "Remaining: 0";
+      document.getElementById("word-card").classList.add("hidden");
+      document.getElementById("spelling-controls").classList.add("hidden");
+      document.getElementById("quiz-controls").classList.add("hidden");
+      document.getElementById("report-card").classList.remove("hidden");
+
+      document.getElementById("rep-student").textContent = "Student: " + studentName;
+      document.getElementById("rep-accuracy").textContent = accuracy + "%";
+      document.getElementById("rep-score").textContent = correctCount + "/" + totalWords;
+      document.getElementById("rep-time").textContent = elapsed + "s";
+      document.getElementById("rep-switches").textContent = String(tabSwitches);
+
+      const mistakeBox = document.getElementById("rep-mistake-box");
+      if (mistakeArr.length > 0) {
+        mistakeBox.classList.remove("hidden");
+        document.getElementById("rep-mistake-list").textContent = mistakeArr.join(", ");
+      } else {
+        mistakeBox.classList.add("hidden");
+      }
+
+      lastReportSummary = new Array(
+        "Irregular Verbs Assessment (" + currentMode.toUpperCase() + ")",
+        "Student: " + studentName,
+        "Score: " + correctCount + "/" + totalWords + " (" + accuracy + "%)",
+        "Time: " + elapsed + "s | Tab Switches: " + tabSwitches,
+        "Mistakes: " + (mistakeArr.length > 0 ? mistakeArr.join(", ") : "None")
+      ).join("\n");
+    }
+
+    function copyReport() {
+      if (!lastReportSummary) return;
+      const ta = document.createElement("textarea");
+      ta.value = lastReportSummary;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); showToast("Assessment report copied!"); }
+      catch (e) { showToast("Copy failed. Please take a screenshot.", true); }
+      document.body.removeChild(ta);
+    }
+
+    function renderCurrent() {
+      updateStats();
+      const feedbackEl = document.getElementById("feedback");
+      feedbackEl.textContent = "";
+      feedbackEl.className = "feedback";
+      if (deck.length === 0) { showCompletionReport(); return; }
+
+      const current = deck.slice(0, 1).pop();
+      document.getElementById("base-word").textContent = current.base;
+      document.getElementById("past-input").value = "";
+      document.getElementById("participle-input").value = "";
+      if (currentMode === "spelling") document.getElementById("past-input").focus();
+      else if (currentMode === "quiz") renderQuizOptions(current);
+    }
+
+    function renderQuizOptions(current) {
+      const container = document.getElementById("quiz-options");
+      container.innerHTML = "";
+      const correctAns = current.past + " / " + current.pp;
+      const distractors = shuffle(VERBS.filter(v => v.base !== current.base)).slice(0, 3).map(v => v.past + " / " + v.pp);
+      shuffle(new Array(correctAns).concat(distractors)).forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "quiz-btn";
+        btn.textContent = opt;
+        btn.onclick = () => {
+          const feedbackEl = document.getElementById("feedback");
+          if (feedbackEl.textContent) return;
+          if (opt === correctAns) {
+            correctCount++;
+            allMistakes.delete(current.base);
+            feedbackEl.textContent = "Correct!";
+            feedbackEl.className = "feedback correct";
+          } else {
+            sessionMistakes.add(current.base);
+            allMistakes.add(current.base);
+            feedbackEl.textContent = "Answer: " + correctAns;
+            feedbackEl.className = "feedback wrong";
+          }
+          updateStats();
+          setTimeout(() => { deck.shift(); renderCurrent(); }, 750);
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function handleSubmit() {
+      if (deck.length === 0) return;
+      if (waitingNext) {
+        waitingNext = false;
+        document.getElementById("submit-btn").textContent = "Submit (Enter)";
+        deck.shift();
+        renderCurrent();
+        return;
+      }
+      const current = deck.slice(0, 1).pop();
+
